@@ -1,0 +1,24 @@
+.account-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.1;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    background-color: #313131;
+    border: none;
+    border-radius: 20px;
+    width: 100px;
+    height: 32px;
+  }
+  
+  .account-button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }

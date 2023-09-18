@@ -1,0 +1,31 @@
+.scroll-movies__container {
+  display:flex;
+  justify-content: center;
+}
+
+.scroll-movies__button {
+  margin: 50px auto 80px;
+  border: 1px solid #424242;
+  background-color: #202020;
+  border-radius: 6px;
+  width: 320px;
+  height: 36px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #fff;
+  text-align: center;
+}
+
+.scroll-movies__button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: 1s ease;
+}
+
+@media screen and (max-width: 480px) {
+  .scroll-movies__button {
+    width: 240px;
+  }
+}
