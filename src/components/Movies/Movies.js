@@ -13,12 +13,12 @@ function Movies() {
   return (
     <>
       <Header />
-      <main className="content">
-        <div className="movies">
+      <main>
+        <section className="movies">
           <SearchForm/>
           <MoviesCardList cards={cardsList} flag="add-favorites-btn"/>
           <ScrollButton cards={cardsListSaved}/>
-        </div>
+        </section>
       </main>
       <Footer />
     </>

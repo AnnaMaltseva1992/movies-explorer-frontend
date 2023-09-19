@@ -1,14 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 import Header from "../Header/Header";
 
 function Profile() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Header />
       <main>
         <section className="profile">
-          <h3 className="profile__title">Привет, Анна!</h3>
+          <h1 className="profile__title">Привет, Анна!</h1>
           <form className="profile__form">
             <div className="profile__form-row">
               <label className="profile__label">Имя</label>
@@ -49,6 +52,7 @@ function Profile() {
             <button
               type="button"
               className="profile__button profile__button_type_logg-out"
+              onClick={() => navigate("/")}
             >
               Выйти из аккаунта
             </button>

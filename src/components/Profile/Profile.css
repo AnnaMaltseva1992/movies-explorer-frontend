@@ -19,7 +19,6 @@
 .profile__form {
   display: flex;
   flex-direction: column;
-
 }
 
 .profile__form-row {
@@ -87,6 +86,12 @@
   font-size: 13px;
   font-weight: 500;
   line-height: 1.2;
+}
+
+.profile__button:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 1s ease;
 }
 
 .profile__button_type_edit {

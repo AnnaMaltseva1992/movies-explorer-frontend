@@ -3,7 +3,7 @@ import "./ScrollButton.css";
 
 function ScrollButton() {
   return (
-    <div className="scroll-movies__container">
+    <div className="scroll-movies">
       <button className="scroll-movies__button" type="button">
         Ещё
       </button>

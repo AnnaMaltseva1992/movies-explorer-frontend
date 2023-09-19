@@ -2,12 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import "./HeaderNav.css";
 import AccountButton from "../AccountButton/AccountButton";
-import burger from '../../images/burger-menu.svg';
+import burger from "../../images/burger-menu.svg";
 
 function HeaderNav() {
   return (
-    <>
-      <nav className="header-nav">
+    <section className="header-nav">
+      <nav className="header-nav__menu">
         <ul className="header-nav__container">
           <li>
             <NavLink to="/movies" className="header-nav__link">
@@ -25,7 +25,7 @@ function HeaderNav() {
       <button type="button" className="header-nav__burger-menu">
         <img src={burger} alt="бургер-меню" />
       </button>
-    </>
+    </section>
   );
 }
 

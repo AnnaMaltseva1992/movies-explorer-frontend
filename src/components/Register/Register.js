@@ -20,6 +20,7 @@ function Register() {
           minLength="2"
           maxLength="40"
           required
+          placeholder="Имя"
         />
         <span className="form__error-text">Что-то пошло не так...</span>
       </section>
@@ -32,6 +33,7 @@ function Register() {
           minLength="2"
           maxLength="40"
           required
+          placeholder="E-mail"
         />
         <span className="form__error-text">Что-то пошло не так...</span>
       </section>
@@ -42,6 +44,7 @@ function Register() {
           className="form__input form__input_error"
           type="password"
           required
+          placeholder="Пароль"
         />
         <span className="form__error-text form__error-text_active">Что-то пошло не так...</span>
       </section>

@@ -25,7 +25,7 @@ function App() {
         <Route path="/signin" element={<Login />}/>
         <Route path="/signup" element={<Register />}/>
         <Route path="/*" element={<ErrorNotFound />}/>
-        <Route path="about-project" element={<AboutProject />}/>
+        <Route path="/about-project" element={<AboutProject />}/>
         <Route path="/techs" element={<Techs />}/>
         <Route path="/about-me" element={<AboutMe />}/>
       </Routes>

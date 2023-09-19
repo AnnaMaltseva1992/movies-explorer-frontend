@@ -20,6 +20,7 @@ function Login() {
           minLength="2"
           maxLength="40"
           required
+          placeholder="E-mail"
         />
         <span className="form__error-text">Что-то пошло не так...</span>
       </section>
@@ -32,6 +33,7 @@ function Login() {
           minLength="2"
           maxLength="40"
           required
+          placeholder="Пароль"
         />
         <span className="form__error-text">Что-то пошло не так...</span>
       </section>

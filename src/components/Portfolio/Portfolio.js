@@ -14,7 +14,7 @@ function Portfolio() {
               target="_blank"
               rel="noreferrer"
             >
-              <p className="portfolio__item">Статичный сайт</p>
+              <p className="portfolio__text">Статичный сайт</p>
               <img
                 className="portfolio__arrow"
                 src={arrow}
@@ -29,7 +29,7 @@ function Portfolio() {
               target="_blank"
               rel="noreferrer"
             >
-              <p className="portfolio__item">Адаптивный сайт</p>
+              <p className="portfolio__text">Адаптивный сайт</p>
               <img
                 className="portfolio__arrow"
                 src={arrow}
@@ -44,7 +44,7 @@ function Portfolio() {
               target="_blank"
               rel="noreferrer"
             >
-              <p className="portfolio__item">Одностраничное приложение</p>
+              <p className="portfolio__text">Одностраничное приложение</p>
               <img
                 className="portfolio__arrow"
                 src={arrow}

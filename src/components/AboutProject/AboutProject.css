@@ -96,7 +96,7 @@
 
 @media screen and (max-width: 768px) {
   .about-project {
-     min-height: 585px;
+    height: 585px;
   }
 
   .about-project__title {
@@ -120,10 +120,6 @@
   .about-project__time {
     grid-template-columns: 140px 1fr;
     margin: 0 50px 90px; 
-  }
-
-  .about-project {
-    min-height: 641px;
   }
 }
 
