@@ -1,0 +1,83 @@
+.error-not-found {
+  min-height: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.error-not-found__title {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  color: #fff;
+  margin: 246px auto 5px;
+  padding: 0;
+}
+
+.error-not-found__text {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  color: #fff;
+  margin: 0 auto 184px;
+  padding: 0;
+}
+
+.error-not-found__link {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  color: #4285f4;
+  text-decoration: none;
+  margin: 0 auto 60px;
+  padding: 0;
+}
+
+.error-not-found__link:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .error-not-found {
+    min-height: 1024px;
+  }
+
+  .error-not-found__title {
+    margin-top: 408px;
+  }
+
+  .error-not-found__link {
+    margin-bottom: 222px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .error-not-found {
+    min-height: 780px;
+  }
+
+  .error-not-found__title {
+    margin: 329px auto 10px;
+    font-size: 80px;
+  }
+
+  .error-not-found__text {
+    margin-bottom: 284px;
+    font-size: 12px;
+  }
+
+  .error-not-found__link {
+    margin-bottom: 30px;
+    font-size: 12px;
+  }
+}
+
