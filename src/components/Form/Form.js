@@ -4,7 +4,7 @@ import "./Form.css";
 import logo from "../../images/logo.svg";
 
 function Form(props) {
-  const { title, children, buttonText, question, linkText, link } = props;
+  const { title, children, buttonText, question, linkText, link, submitHandler } = props;
   return (
     <main>
       <section className="form">
@@ -12,9 +12,13 @@ function Form(props) {
           <img src={logo} alt="Логотип" />
         </Link>
         <h1 className="form__title">{title}</h1>
-        <form className="form__container">
+        <form className="form__container" onSubmit={(e) => {
+          e.preventDefault()
+          console.log('call')
+          submitHandler()
+        }}>
           {children}
-          <button type="submit" className="form__submit-button">
+          <button type="submit" className="form__submit-button" >
             {buttonText}
           </button>
         </form>

@@ -107,3 +107,8 @@ export const cardsListSaved = [
     movieId: '3',
   }
 ]
+
+
+// 
+
+export const REGEX_EMAIL = /[a-z0-9]+@[a-z]+\.[a-z]{2,}/;
