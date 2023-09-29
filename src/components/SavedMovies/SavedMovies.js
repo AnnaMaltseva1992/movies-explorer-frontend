@@ -6,7 +6,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import { cardsListSaved } from "../../utils/constants";
 
-function SavedMovies({isLoggedIn}) {
+function SavedMovies({ isLoggedIn, savedMovies, setSavedMovies }) {
   return (
     <>
       <Header isLoggedIn={isLoggedIn} />

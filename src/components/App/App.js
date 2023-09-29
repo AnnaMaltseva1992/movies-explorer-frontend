@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { registration, login, tokenCheck, userEdit } from "../../utils/authApi";
+import { registration, login, tokenCheck, userEdit } from "../../utils/MainApi";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
@@ -19,6 +19,7 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [savedMovies, setSavedMovies] = useState([])
   const location = useLocation();
 
   const handleTokenCheck = () => {
@@ -30,7 +31,7 @@ function App() {
           email,
         });
         setIsLoggedIn(true);
-        navigate("/movies", { replace: true });
+        navigate(location, { replace: true });
       })
       .catch((err) => {
         console.log(err);
@@ -94,13 +95,13 @@ function App() {
             <Route
               path="/movies"
               element={
-                <ProtectedRoute isLoggedIn={isLoggedIn} element={Movies} />
+                <ProtectedRoute isLoggedIn={isLoggedIn} savedMovies={savedMovies} setSavedMovies={setSavedMovies} element={Movies} />
               }
             />
             <Route
               path="/saved-movies"
               element={
-                <ProtectedRoute isLoggedIn={isLoggedIn} element={SavedMovies} />
+                <ProtectedRoute isLoggedIn={isLoggedIn} savedMovies={savedMovies} setSavedMovies={setSavedMovies} element={SavedMovies} />
               }
             />
             <Route

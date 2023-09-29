@@ -59,8 +59,13 @@
   line-height: 0.9;
   color: #fff;
   text-align: center;
+  /* display: none; */
+}
+
+.card__save-button_hidden {
   display: none;
 }
+
 
 .card__save-button::before {
   content: 'Сохранить';

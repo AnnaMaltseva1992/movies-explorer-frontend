@@ -2,17 +2,20 @@ import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import "./MoviesCardList.css";
 
-const MoviesCardList = ({ cards }) => {
+const MoviesCardList = ({ cards, savedMovies }) => {
   return (
     <section className="movies-cards">
       <ul className="movies-cards__list">
         {cards.map((card) => (
           <MoviesCard
-            key={card.movieId}
-            movieId={card.movieId}
+            savedMovies={savedMovies}
+            key={card.id}
+            movieId={card.id}
             duration={card.duration}
-            image={card.image}
+            image={`https://api.nomoreparties.co/${card.image.url}`}
+            trailerLink={card.trailerLink}
             name={card.nameRU}
+            card={card}
           />
         ))}
       </ul>

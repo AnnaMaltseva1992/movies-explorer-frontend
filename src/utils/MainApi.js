@@ -60,3 +60,52 @@ export const tokenCheck = () => {
     },
   }).then((res) => checkResponse(res));
 };
+
+export const addMovie = (movie) => {
+  return fetch(`${BASE_URL}/movies`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
+
+  //   country: Joi.string().required(),
+  //   director: Joi.string().required(),
+  //   duration: Joi.number().required(),
+  //   year: Joi.string().required(),
+  //   description: Joi.string().required(),
+  //   image: Joi.string().required(),
+  //   trailerLink: Joi.string().required(),
+  //   nameRU: Joi.string().required(),
+  //   nameEN: Joi.string().required(),
+  //   thumbnail: Joi.string().required(),
+  //   movieId: Joi.number().required(),
+  // }),
+
+    body: JSON.stringify({
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration + 1 - 1,
+      year: movie.year + '',
+      description: movie.description,
+      image: `${BASE_URL}${movie.image.url}`,
+      trailerLink: movie.trailerLink,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN,
+      thumbnail: `${BASE_URL}${movie.image.formats.thumbnail.url}`,
+      movieId: movie.id + 1 - 1,
+    }),
+  }).then((res) => checkResponse(res));
+};
+
+export const removeMovie = (movieId) => {
+  return fetch(`${BASE_URL}/movie/${movieId}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
+  }).then((res) => checkResponse(res));
+};
