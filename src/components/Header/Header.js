@@ -2,12 +2,13 @@ import React from "react";
 import "./Header.css";
 import Logo from "../Logo/Logo";
 import HeaderAuth from "../HeaderAuth/HeaderAuth";
+import HeaderNav from "../HeaderNav/HeaderNav";
 
-function Header() {
+function Header({ isLoggedIn }) {
   return (
     <header className="header">
       <Logo />
-      <HeaderAuth />
+      {isLoggedIn? <HeaderNav /> : <HeaderAuth />}
     </header>
   );
 }

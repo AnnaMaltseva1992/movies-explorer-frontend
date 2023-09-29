@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import "./HeaderNav.css";
 import AccountButton from "../AccountButton/AccountButton";
 import burger from "../../images/burger-menu.svg";

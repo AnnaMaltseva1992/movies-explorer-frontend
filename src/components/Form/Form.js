@@ -4,7 +4,7 @@ import "./Form.css";
 import logo from "../../images/logo.svg";
 
 function Form(props) {
-  const { title, children, buttonText, question, linkText, link, submitHandler } = props;
+  const { title, children, buttonText, question, linkText, link, submitHandler, isButtonDisabled } = props;
   return (
     <main>
       <section className="form">
@@ -14,11 +14,10 @@ function Form(props) {
         <h1 className="form__title">{title}</h1>
         <form className="form__container" onSubmit={(e) => {
           e.preventDefault()
-          console.log('call')
           submitHandler()
         }}>
           {children}
-          <button type="submit" className="form__submit-button" >
+          <button disabled={!isButtonDisabled} type="submit" className={`form__submit-button${!isButtonDisabled? '_disabled' : ''}`} >
             {buttonText}
           </button>
         </form>

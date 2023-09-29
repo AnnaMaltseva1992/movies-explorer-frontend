@@ -8,21 +8,20 @@ import Footer from "../Footer/Footer";
 import ScrollButton from "../ScrollButton/ScrollButton";
 import { cardsListSaved } from "../../utils/constants";
 
-
-function Movies() {
+function Movies({ isLoggedIn }) {
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} />
       <main>
         <section className="movies">
-          <SearchForm/>
-          <MoviesCardList cards={cardsList} flag="add-favorites-btn"/>
-          <ScrollButton cards={cardsListSaved}/>
+          <SearchForm />
+          <MoviesCardList cards={cardsList} flag="add-favorites-btn" />
+          <ScrollButton cards={cardsListSaved} />
         </section>
       </main>
       <Footer />
     </>
   );
-};
+}
 
 export default Movies;

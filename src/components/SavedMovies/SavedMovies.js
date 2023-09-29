@@ -6,10 +6,10 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import { cardsListSaved } from "../../utils/constants";
 
-function SavedMovies() {
+function SavedMovies({isLoggedIn}) {
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} />
       <main>
         <section className="saved-movies">
           <SearchForm />

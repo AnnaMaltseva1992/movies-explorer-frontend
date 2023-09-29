@@ -8,7 +8,6 @@ function checkResponse(res) {
 }
 
 export const registration = (item) => {
-  console.log('Api', item);
   const { name, email, password } = item;
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
@@ -24,7 +23,8 @@ export const registration = (item) => {
   }).then((res) => checkResponse(res));
 };
 
-export const login = (email, password) => {
+export const login = (item) => {
+  const { email, password } = item;
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
@@ -34,7 +34,8 @@ export const login = (email, password) => {
   }).then((res) => checkResponse(res));
 };
 
-export const userEdit = (name, email) => {
+export const userEdit = (item) => {
+  const { name, email } = item;
   return fetch(`${BASE_URL}/users/me`, {
     method: "PATCH",
     headers: {
@@ -49,7 +50,7 @@ export const userEdit = (name, email) => {
   }).then((res) => checkResponse(res));
 };
 
-export const tokencheck = () => {
+export const tokenCheck = () => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
