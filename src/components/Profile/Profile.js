@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 import Header from "../Header/Header";
 import { REGEX_EMAIL } from "../../utils/constants";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 
 function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
-  const navigate = useNavigate();
   const userData = useContext(CurrentUserContext);
   const [formValue, setFormValue] = useState({
     name: userData.name || "",
@@ -19,20 +17,24 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
   const [isSubmitButtonActive, setIsSubmitButtonActive] = useState(true);
   const [isInputDisabled, setInputDisabled] = useState(true);
 
+  const isNameFieldsValid =
+  !formErrorMessage.name &&
+  formErrorMessage.name == ""
+  
+  const isEmailFieldsValid =
+  !formErrorMessage.email &&
+  formErrorMessage.email == ""
+
   useEffect(() => {
     if (
-      formValue.name !== userData.name &&
-      formValue.email !== userData.email &&
-      !formErrorMessage.name &&
-      !formErrorMessage.email &&
-      formErrorMessage.name == "" &&
-      formErrorMessage.email == ""
+      (formValue.name !== userData.name ||
+      formValue.email !== userData.email) && isEmailFieldsValid
     ) {
       setIsSubmitButtonActive(true);
     } else {
       setIsSubmitButtonActive(false);
     }
-  }, [formValue, userData, formErrorMessage]);
+  }, [formValue, userData, isEmailFieldsValid, isNameFieldsValid]);
 
   function handleChangeName(e) {
     const { name, value } = e.target;
@@ -63,12 +65,11 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
     }
   }
 
-function handleUserEditSubmit() {
-  handleUserEdit(formValue)
-  .then(() => {
-    setInputDisabled(true)
-  })
-}
+  function handleUserEditSubmit() {
+    handleUserEdit(formValue).then(() => {
+      setInputDisabled(true);
+    });
+  }
 
   return (
     <>

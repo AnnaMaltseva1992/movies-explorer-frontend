@@ -14,35 +14,35 @@ import Techs from "../Techs/Techs";
 import AboutMe from "../AboutMe/AboutMe";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import Footer from "../Footer/Footer";
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const location = useLocation();
-  const isPageNotFound = location.pathname === "/*";
+
+  const handleTokenCheck = () => {
+    return tokenCheck()
+      .then((res) => {
+        const { name, email } = res;
+        setCurrentUser({
+          name,
+          email,
+        });
+        setIsLoggedIn(true);
+        navigate("/movies", { replace: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
-    const handleTokenCheck = () => {
-      return tokenCheck()
-        .then((res) => {
-          const { name, email } = res;
-          setCurrentUser({
-            name,
-            email,
-          });
-          setIsLoggedIn(true);
-          navigate("/movies", { replace: true });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
     handleTokenCheck();
   }, []);
 
   const navigate = useNavigate();
+
   function handleRegistration(formValue) {
     // const { name, email, password } = formValue;
     return registration(formValue)
@@ -59,6 +59,7 @@ function App() {
         localStorage.setItem("jwt", res.token);
         setIsLoggedIn(true);
         navigate("/movies", { replace: true });
+        handleTokenCheck()
       })
       .catch(() => console.log("registr False"));
   }
@@ -116,7 +117,7 @@ function App() {
             <Route path="/about-project" element={<AboutProject />} />
             <Route path="/techs" element={<Techs />} />
             <Route path="/about-me" element={<AboutMe />} />
-            <Route path="/signin" element={<Login />} />
+            <Route path="/signin" element={<Login setCurrentUser={setCurrentUser} handleSubmit={handleLogin} />} />
             <Route
               path="/signup"
               element={<Register handleSubmit={handleRegistration} />}

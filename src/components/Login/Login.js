@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./Login.css";
 import Form from "../Form/Form";
-import { login } from "../../utils/authApi";
 import { REGEX_EMAIL } from "../../utils/constants";
 
-function Login({ handleSubmit }) {
-  const [formValue, setFormValue] = useState({});
+function Login({ handleSubmit, setCurrentUser }) {
+  const [formValue, setFormValue] = useState({
+    email: "",
+    password: "",
+  });
   const [formErrorMessage, setFormErrorMessage] = useState({
     email: "",
     password: "",
