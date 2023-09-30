@@ -1,10 +1,10 @@
 import React from "react";
 import "./ScrollButton.css";
 
-function ScrollButton() {
+function ScrollButton({onClick}) {
   return (
     <div className="scroll-movies">
-      <button className="scroll-movies__button" type="button">
+      <button onClick={onClick} className="scroll-movies__button" type="button">
         Ещё
       </button>
     </div>

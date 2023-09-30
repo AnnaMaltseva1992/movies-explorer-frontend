@@ -35,6 +35,9 @@
   background-color: #313131;
   width: 21px;
   height: 21px;
+}
+
+.card__delete-button_hidden {
   display: none;
 }
 

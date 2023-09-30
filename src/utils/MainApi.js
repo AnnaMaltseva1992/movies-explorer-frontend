@@ -1,5 +1,5 @@
-// const BASE_URL = "https://api.annamaltseva.diploma.nomoredomainsicu.ru";
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "https://api.annamaltseva.diploma.nomoredomainsicu.ru";
+// const BASE_URL = "http://localhost:3001";
 function checkResponse(res) {
   if (res.ok) {
     return res.json();
@@ -69,38 +69,24 @@ export const addMovie = (movie) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("jwt")}`,
     },
-
-  //   country: Joi.string().required(),
-  //   director: Joi.string().required(),
-  //   duration: Joi.number().required(),
-  //   year: Joi.string().required(),
-  //   description: Joi.string().required(),
-  //   image: Joi.string().required(),
-  //   trailerLink: Joi.string().required(),
-  //   nameRU: Joi.string().required(),
-  //   nameEN: Joi.string().required(),
-  //   thumbnail: Joi.string().required(),
-  //   movieId: Joi.number().required(),
-  // }),
-
     body: JSON.stringify({
       country: movie.country,
       director: movie.director,
       duration: movie.duration + 1 - 1,
       year: movie.year + '',
       description: movie.description,
-      image: `${BASE_URL}${movie.image.url}`,
+      image: `https://api.nomoreparties.co${movie.image.url}`,
       trailerLink: movie.trailerLink,
       nameRU: movie.nameRU,
       nameEN: movie.nameEN,
-      thumbnail: `${BASE_URL}${movie.image.formats.thumbnail.url}`,
+      thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
       movieId: movie.id + 1 - 1,
     }),
   }).then((res) => checkResponse(res));
 };
 
 export const removeMovie = (movieId) => {
-  return fetch(`${BASE_URL}/movie/${movieId}`, {
+  return fetch(`${BASE_URL}/movies/${movieId}`, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
@@ -109,3 +95,12 @@ export const removeMovie = (movieId) => {
     },
   }).then((res) => checkResponse(res));
 };
+
+export const getMySavedMovie = () => {
+  return fetch(`${BASE_URL}/movies`, {
+    headers: {
+      'authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
+    }
+  }).then((res) => checkResponse(res))
+}

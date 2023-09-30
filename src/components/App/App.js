@@ -2,25 +2,25 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { registration, login, tokenCheck, userEdit } from "../../utils/MainApi";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import Main from "../Main/Main";
-import Movies from "../Movies/Movies";
-import SavedMovies from "../SavedMovies/SavedMovies";
-import Profile from "../Profile/Profile";
-import Login from "../Login/Login";
-import Register from "../Register/Register";
-import ErrorNotFound from "../ErrorNotFound/ErrorNotFound";
-import AboutProject from "../AboutProject/AboutProject";
-import Techs from "../Techs/Techs";
-import AboutMe from "../AboutMe/AboutMe";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import ErrorNotFound from "../ErrorNotFound/ErrorNotFound";
+import AboutProject from "../AboutProject/AboutProject";
+import SavedMovies from "../SavedMovies/SavedMovies";
+import Register from "../Register/Register";
+import AboutMe from "../AboutMe/AboutMe";
+import Profile from "../Profile/Profile";
+import Movies from "../Movies/Movies";
+import Login from "../Login/Login";
+import Techs from "../Techs/Techs";
+import Main from "../Main/Main";
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [savedMovies, setSavedMovies] = useState([])
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleTokenCheck = () => {
     return tokenCheck()
@@ -39,17 +39,16 @@ function App() {
   };
 
   useEffect(() => {
-    handleTokenCheck();
-  }, []);
-
-  const navigate = useNavigate();
+    if (!isLoggedIn) {
+      handleTokenCheck();
+    }
+  }, [isLoggedIn]);
 
   function handleRegistration(formValue) {
-    // const { name, email, password } = formValue;
     return registration(formValue)
       .then((res) => {
         setCurrentUser(res.data);
-        handleLogin(formValue);
+        return handleLogin(formValue);
       })
       .catch((err) => console.log("registr False", err.message));
   }
@@ -68,7 +67,7 @@ function App() {
   function handleEditProfile(formValue) {
     return userEdit(formValue)
       .then((res) => {
-        const {name,  email} = res
+        const { name, email } = res
         setCurrentUser({
           name,
           email
@@ -82,7 +81,7 @@ function App() {
   function handleLogOut() {
     localStorage.clear()
     setIsLoggedIn(false)
-    navigate('/', {replace: true})
+    navigate('/', { replace: true })
     setCurrentUser({})
   }
 
@@ -95,13 +94,13 @@ function App() {
             <Route
               path="/movies"
               element={
-                <ProtectedRoute isLoggedIn={isLoggedIn} savedMovies={savedMovies} setSavedMovies={setSavedMovies} element={Movies} />
+                <ProtectedRoute isLoggedIn={isLoggedIn} element={Movies} />
               }
             />
             <Route
               path="/saved-movies"
               element={
-                <ProtectedRoute isLoggedIn={isLoggedIn} savedMovies={savedMovies} setSavedMovies={setSavedMovies} element={SavedMovies} />
+                <ProtectedRoute isLoggedIn={isLoggedIn} element={SavedMovies} />
               }
             />
             <Route

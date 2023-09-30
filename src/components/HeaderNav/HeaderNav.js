@@ -1,10 +1,17 @@
-import React from "react";
-import { NavLink} from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import "./HeaderNav.css";
 import AccountButton from "../AccountButton/AccountButton";
 import burger from "../../images/burger-menu.svg";
+import Navigation from "../Navigation/Navigation";
 
 function HeaderNav() {
+  const [isPopupOpened, setIsPopupOpened] = useState(false)
+
+  const handlePopupClose = () => {
+    setIsPopupOpened(false)
+  }
+
   return (
     <section className="header-nav">
       <nav className="header-nav__menu">
@@ -22,9 +29,10 @@ function HeaderNav() {
         </ul>
         <AccountButton />
       </nav>
-      <button type="button" className="header-nav__burger-menu">
+      <button type="button" onClick={() => setIsPopupOpened(true)} className="header-nav__burger-menu">
         <img src={burger} alt="бургер-меню" />
       </button>
+      {isPopupOpened && <Navigation isPopupOpened={isPopupOpened} onClose={handlePopupClose} />}
     </section>
   );
 }
