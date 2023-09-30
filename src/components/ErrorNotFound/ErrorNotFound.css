@@ -39,6 +39,8 @@
   text-decoration: none;
   margin: 0 auto 60px;
   padding: 0;
+  border: 0;
+  background-color: transparent;
 }
 
 .error-not-found__link:hover {

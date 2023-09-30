@@ -3,7 +3,7 @@ import "./Login.css";
 import Form from "../Form/Form";
 import { REGEX_EMAIL } from "../../utils/constants";
 
-function Login({ handleSubmit, setCurrentUser }) {
+function Login({ handleSubmit, setInfoToolTip }) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -13,13 +13,16 @@ function Login({ handleSubmit, setCurrentUser }) {
     password: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState('')
+
   const isFormFieldsValid =
-    !formErrorMessage.email &&
-    !formErrorMessage.password &&
     formErrorMessage.email == "" &&
-    formErrorMessage.password == "";
+    formErrorMessage.password == "" &&
+    formValue.password !== '' &&
+    formValue.email !== '';
 
   function handleChangeEmail(e) {
+    setErrorMessage('')
     const { name, value } = e.target;
     setFormValue({
       ...formValue,
@@ -36,6 +39,7 @@ function Login({ handleSubmit, setCurrentUser }) {
   }
 
   function handleChangePassword(e) {
+    setErrorMessage('')
     const { name, value } = e.target;
     setFormValue({
       ...formValue,
@@ -49,7 +53,24 @@ function Login({ handleSubmit, setCurrentUser }) {
   }
 
   function handleLogin() {
-    handleSubmit(formValue);
+    handleSubmit(formValue)
+      .catch((err) => {
+        setInfoToolTip({ text: err, statusOk: false, opened: true })
+        switch (err) {
+          case 'Ошибка: 400':
+            setErrorMessage('Вы ввели неправильный логин или пароль.');
+            break;
+          case 'Ошибка: 401':
+            setErrorMessage('Вы ввели неправильный логин или пароль.');
+            break;
+          case 'Ошибка: 403':
+            setErrorMessage('При авторизации произошла ошибка. Переданный токен некорректен.');
+            break;
+          default:
+            setErrorMessage('При авторизации произошла ошибка. Токен не передан или передан не в том формате.');
+            break;
+        }
+      });
   }
 
   return (
@@ -75,9 +96,8 @@ function Login({ handleSubmit, setCurrentUser }) {
           onChange={handleChangeEmail}
         />
         <span
-          className={`form__error-text ${
-            formErrorMessage.email.length > 0 ? "form__error-text_active" : ""
-          } `}
+          className={`form__error-text ${formErrorMessage.email.length > 0 ? "form__error-text_active" : ""
+            } `}
         >
           {formErrorMessage.email.length > 0 ? formErrorMessage.email : ""}
         </span>
@@ -95,11 +115,10 @@ function Login({ handleSubmit, setCurrentUser }) {
           onChange={handleChangePassword}
         />
         <span
-          className={`form__error-text ${
-            formErrorMessage.password.length > 0
+          className={`form__error-text ${formErrorMessage.password.length > 0
               ? "form__error-text_active"
               : ""
-          } `}
+            } `}
         >
           {formErrorMessage.password.length > 0
             ? formErrorMessage.password
@@ -107,6 +126,7 @@ function Login({ handleSubmit, setCurrentUser }) {
           .
         </span>
       </section>
+      {errorMessage.length > 0 && <span className="form__error">{errorMessage}</span>}
     </Form>
   );
 }

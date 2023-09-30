@@ -4,7 +4,7 @@ import Header from "../Header/Header";
 import { REGEX_EMAIL } from "../../utils/constants";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 
-function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
+function Profile({ isLoggedIn, handleUserEdit, handleLogOut, setInfoToolTip }) {
   const userData = useContext(CurrentUserContext);
   const [formValue, setFormValue] = useState({
     name: userData.name || "",
@@ -16,19 +16,19 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
   });
   const [isSubmitButtonActive, setIsSubmitButtonActive] = useState(true);
   const [isInputDisabled, setInputDisabled] = useState(true);
-
+  const [errorMessage, setErrorMessage] = useState('')
   const isNameFieldsValid =
-  !formErrorMessage.name &&
-  formErrorMessage.name == ""
-  
+    !formErrorMessage.name &&
+    formErrorMessage.name == ""
+
   const isEmailFieldsValid =
-  !formErrorMessage.email &&
-  formErrorMessage.email == ""
+    !formErrorMessage.email &&
+    formErrorMessage.email == ""
 
   useEffect(() => {
     if (
       (formValue.name !== userData.name ||
-      formValue.email !== userData.email) && isEmailFieldsValid
+        formValue.email !== userData.email) && isEmailFieldsValid
     ) {
       setIsSubmitButtonActive(true);
     } else {
@@ -66,9 +66,22 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
   }
 
   function handleUserEditSubmit() {
-    handleUserEdit(formValue).then(() => {
-      setInputDisabled(true);
-    });
+    return handleUserEdit(formValue)
+      .then(() => {
+        setInputDisabled(true);
+        setInfoToolTip({ text: 'Успешно', statusOk: true, opened: true })
+      })
+      .catch((err) => {
+        setInfoToolTip({ text: err, statusOk: false, opened: true })
+        switch (err) {
+          case 'Ошибка: 409':
+            setErrorMessage('Пользователь с таким email уже существует.');
+            break;
+          default:
+            setErrorMessage('При обновлении профиля произошла ошибка.');
+            break;
+        }
+      });;
   }
 
   return (
@@ -93,11 +106,10 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
                 onChange={handleChangeName}
               />
               <span
-                className={`profile__input-error ${
-                  formErrorMessage.name.length > 0
-                    ? "profile__input-error_active"
-                    : ""
-                } `}
+                className={`profile__input-error ${formErrorMessage.name.length > 0
+                  ? "profile__input-error_active"
+                  : ""
+                  } `}
               >
                 {formErrorMessage.name.length > 0 ? formErrorMessage.name : ""}.
               </span>
@@ -115,11 +127,10 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
                 onChange={handleChangeEmail}
               />
               <span
-                className={`profile__input-error ${
-                  formErrorMessage.email.length > 0
-                    ? "profile__input-error_active"
-                    : ""
-                } `}
+                className={`profile__input-error ${formErrorMessage.email.length > 0
+                  ? "profile__input-error_active"
+                  : ""
+                  } `}
               >
                 {formErrorMessage.email.length > 0
                   ? formErrorMessage.email
@@ -127,6 +138,7 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
                 .
               </span>
             </div>
+            {errorMessage.length > 0 && <span style={{marginBottom: '20 px'}} className="form__error">{errorMessage}</span>}
             {isInputDisabled ? (
               <>
                 <button
@@ -152,9 +164,8 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut }) {
                 type="button"
                 onClick={handleUserEditSubmit}
                 disabled={!isSubmitButtonActive}
-                className={`profile__button-save${
-                  isSubmitButtonActive ? "" : "_disabled"
-                }`}
+                className={`profile__button-save${isSubmitButtonActive ? "" : "_disabled"
+                  }`}
               >
                 Cохранить
               </button>

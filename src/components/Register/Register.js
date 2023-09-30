@@ -1,26 +1,31 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Register.css";
-import Form from "../Form/Form";
 import { REGEX_EMAIL } from "../../utils/constants";
+import Form from "../Form/Form";
 
-function Register({ handleSubmit }) {
-  const [formValue, setFormValue] = useState({});
+function Register({ handleSubmit, setInfoToolTip }) {
+  const [formValue, setFormValue] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [formErrorMessage, setFormErrorMessage] = useState({
     name: "",
     email: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState('')
 
   const isFormFieldsValid =
-    !formErrorMessage.name &&
-    !formErrorMessage.email &&
-    !formErrorMessage.password &&
     formErrorMessage.name == "" &&
     formErrorMessage.email == "" &&
-    formErrorMessage.password == "";
+    formErrorMessage.password == "" &&
+    formValue.password !== '' &&
+    formValue.email !== '' &&
+    formValue.name !== '';
 
   function handleChangeName(e) {
+    setErrorMessage('')
     const { name, value } = e.target;
     setFormValue({
       ...formValue,
@@ -34,6 +39,7 @@ function Register({ handleSubmit }) {
   }
 
   function handleChangeEmail(e) {
+    setErrorMessage('')
     const { name, value } = e.target;
     setFormValue({
       ...formValue,
@@ -50,6 +56,7 @@ function Register({ handleSubmit }) {
   }
 
   function handleChangePassword(e) {
+    setErrorMessage('')
     const { name, value } = e.target;
     setFormValue({
       ...formValue,
@@ -63,7 +70,18 @@ function Register({ handleSubmit }) {
   }
 
   function handleRegistration() {
-    handleSubmit(formValue);
+    handleSubmit(formValue)
+      .catch((err) => {
+        setInfoToolTip({ text: err, statusOk: false, opened: true })
+        switch (err) {
+          case 'Ошибка: 409':
+            setErrorMessage('Пользователь с таким email уже существует.');
+            break;
+          default:
+            setErrorMessage('При регистрации пользователя произошла ошибка.');
+            break;
+        }
+      });
   }
 
   return (
@@ -89,9 +107,8 @@ function Register({ handleSubmit }) {
           onChange={handleChangeName}
         />
         <span
-          className={`form__error-text ${
-            formErrorMessage.name.length > 0 ? "form__error-text_active" : ""
-          } `}
+          className={`form__error-text ${formErrorMessage.name.length > 0 ? "form__error-text_active" : ""
+            } `}
         >
           {formErrorMessage.name.length > 0 ? formErrorMessage.name : ""}.
         </span>
@@ -109,9 +126,8 @@ function Register({ handleSubmit }) {
           onChange={handleChangeEmail}
         />
         <span
-          className={`form__error-text ${
-            formErrorMessage.email.length > 0 ? "form__error-text_active" : ""
-          } `}
+          className={`form__error-text ${formErrorMessage.email.length > 0 ? "form__error-text_active" : ""
+            } `}
         >
           {formErrorMessage.email.length > 0 ? formErrorMessage.email : ""}.
         </span>
@@ -120,26 +136,25 @@ function Register({ handleSubmit }) {
       <section className="form__section">
         <input
           name="password"
-          className={`form__input ${
-            formErrorMessage.password.length > 0 ? "form__input_error" : ""
-          } `}
+          className={`form__input ${formErrorMessage.password.length > 0 ? "form__input_error" : ""
+            } `}
           type="password"
           required
           placeholder="Пароль"
           onChange={handleChangePassword}
         />
         <span
-          className={`form__error-text ${
-            formErrorMessage.password.length > 0
-              ? "form__error-text_active"
-              : ""
-          } `}
+          className={`form__error-text ${formErrorMessage.password.length > 0
+            ? "form__error-text_active"
+            : ""
+            } `}
         >
           {formErrorMessage.password.length > 0
             ? formErrorMessage.password
             : ""}
           .
         </span>
+        {errorMessage.length > 0 && <span className="form__error">{errorMessage}</span>}
       </section>
     </Form>
   );

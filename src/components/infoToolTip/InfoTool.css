@@ -1,0 +1,49 @@
+.info-tool {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  min-width: 100px;
+  width: 100%;
+  max-width: 300px;
+  height: 50px;
+}
+
+.info-tool_opened {
+  display: block;
+}
+
+.info-tool__tooltip {
+  position: absolute;
+  bottom: 0;
+  padding: 5px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.info-tool__icon {
+  width: 40px;
+  height: 40px;
+
+}
+
+.info-tool__tooltip-text {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

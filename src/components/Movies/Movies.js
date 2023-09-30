@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./Movies.css";
 import { addMovie, removeMovie, getMySavedMovie } from "../../utils/MainApi"
 import { getInitialMovies, } from "../../utils/MoviesApi";
-import { cardsListSaved } from "../../utils/constants";
+import {
+  SHORT_FILM_DURATION,
+  NUMBER_OF_MOVIE_DESKTOP,
+  NUMBER_OF_MOVIE_TABLET,
+  NUMBER_OF_MOVIE_MOBILE,
+  MOBILE_SIZE, TABLET_SIZE
+} from '../../utils/constants'
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import ScrollButton from "../ScrollButton/ScrollButton";
 import SearchForm from "../SearchForm/SearchForm";
@@ -11,12 +17,7 @@ import Footer from "../Footer/Footer";
 import Preloader from "../Preloader/Preloader";
 
 function Movies({ isLoggedIn }) {
-  const SHORT_FILM_DURATION = 40;
-  const NUMBER_OF_MOVIE_DESKTOP = 12;
-  const NUMBER_OF_MOVIE_TABLET = 8
-  const NUMBER_OF_MOVIE_MOBILE = 5;
-  const MOBILE_SIZE = 480;
-  const TABLET_SIZE = 768
+
 
   const [initialMovies, setInitialMovies] = useState([]);
   const [isEmptyQuery, setIsEmptyQuery] = useState(false);
@@ -165,7 +166,7 @@ function Movies({ isLoggedIn }) {
 
   useEffect(() => {
     localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
-  },[savedMovies])
+  }, [savedMovies])
 
   return (
     <>
@@ -184,7 +185,7 @@ function Movies({ isLoggedIn }) {
                 isSavedMoviePage={false}
                 flag="add-favorites-btn"
               />
-              {movieToRender.length > visibleMovies && <ScrollButton onClick={handleLoadMore} cards={cardsListSaved} />}
+              {movieToRender.length > visibleMovies && <ScrollButton onClick={handleLoadMore} />}
             </>}
         </section>
       </main>

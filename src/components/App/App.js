@@ -7,6 +7,7 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ErrorNotFound from "../ErrorNotFound/ErrorNotFound";
 import AboutProject from "../AboutProject/AboutProject";
 import SavedMovies from "../SavedMovies/SavedMovies";
+import InfoTool from "../infoToolTip/InfoTool";
 import Register from "../Register/Register";
 import AboutMe from "../AboutMe/AboutMe";
 import Profile from "../Profile/Profile";
@@ -15,53 +16,52 @@ import Login from "../Login/Login";
 import Techs from "../Techs/Techs";
 import Main from "../Main/Main";
 
-
 function App() {
-  const [currentUser, setCurrentUser] = useState({});
+  const [infoToolTip, setInfoToolTip] = useState({ statusOk: false, text: '', opened: false, })
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const location = useLocation();
+  const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
-
-  const handleTokenCheck = () => {
-    return tokenCheck()
-      .then((res) => {
-        const { name, email } = res;
-        setCurrentUser({
-          name,
-          email,
-        });
-        setIsLoggedIn(true);
-        navigate(location, { replace: true });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const location = useLocation();
 
   useEffect(() => {
+    const handleTokenCheck = () => {
+      return tokenCheck()
+        .then((res) => {
+          const { name, email } = res;
+          setCurrentUser({
+            name,
+            email,
+          });
+          setIsLoggedIn(true);
+          navigate(location.pathname, { replace: true });
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    };
+
     if (!isLoggedIn) {
       handleTokenCheck();
     }
   }, [isLoggedIn]);
 
+
   function handleRegistration(formValue) {
     return registration(formValue)
       .then((res) => {
+        setInfoToolTip({ statusOk: true, text: 'Пользователь зарегистрирован', opened: true, })
         setCurrentUser(res.data);
-        return handleLogin(formValue);
+        handleLogin(formValue);
       })
-      .catch((err) => console.log("registr False", err.message));
   }
 
   function handleLogin(formValue) {
     return login(formValue)
       .then((res) => {
-        localStorage.setItem("jwt", res.token);
         setIsLoggedIn(true);
+        localStorage.setItem("jwt", res.token);
         navigate("/movies", { replace: true });
-        handleTokenCheck()
       })
-      .catch(() => console.log("registr False"));
   }
 
   function handleEditProfile(formValue) {
@@ -73,9 +73,6 @@ function App() {
           email
         })
       })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   function handleLogOut() {
@@ -83,6 +80,10 @@ function App() {
     setIsLoggedIn(false)
     navigate('/', { replace: true })
     setCurrentUser({})
+  }
+
+  function handleCloseInfoTooltip() {
+    setInfoToolTip({ statusOk: false, text: '', opened: false, })
   }
 
   return (
@@ -111,19 +112,28 @@ function App() {
                   handleUserEdit={handleEditProfile}
                   handleLogOut={handleLogOut}
                   element={Profile}
+                  setInfoToolTip={setInfoToolTip}
                 />
               }
             />
             <Route path="/about-project" element={<AboutProject />} />
             <Route path="/techs" element={<Techs />} />
             <Route path="/about-me" element={<AboutMe />} />
-            <Route path="/signin" element={<Login setCurrentUser={setCurrentUser} handleSubmit={handleLogin} />} />
+            <Route
+              path="/signin"
+              element={<Login setCurrentUser={setCurrentUser} setInfoToolTip={setInfoToolTip} handleSubmit={handleLogin} />} />
             <Route
               path="/signup"
-              element={<Register handleSubmit={handleRegistration} />}
+              element={<Register setInfoToolTip={setInfoToolTip} handleSubmit={handleRegistration} />}
             />
             <Route path="/*" element={<ErrorNotFound />} />
           </Routes>
+          <InfoTool
+            statusOk={infoToolTip.statusOk}
+            text={infoToolTip.text}
+            opened={infoToolTip.opened}
+            onClose={handleCloseInfoTooltip}
+          />
         </CurrentUserContext.Provider>
       </div>
     </div>

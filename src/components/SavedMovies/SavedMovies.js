@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "./SavedMovies.css";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import { SHORT_FILM_DURATION } from "../../utils/constants";
+import { removeMovie } from "../../utils/MainApi";
 import SearchForm from "../SearchForm/SearchForm";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { removeMovie } from "../../utils/MainApi";
 
 function SavedMovies({ isLoggedIn }) {
-  const SHORT_FILM_DURATION = 40;
   const [savedMovies, setSavedMovies] = useState(() => {
     return JSON.parse(localStorage.getItem('savedMovies')) || []
   })

@@ -1,8 +1,15 @@
 .movies {
   max-width: 1280px;
+  display: flex;
+  flex-direction: column;
 }
 
 .movies__error-empty {
   color: white;
   margin: 0 auto;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
 }
