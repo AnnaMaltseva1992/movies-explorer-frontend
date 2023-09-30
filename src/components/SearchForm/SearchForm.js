@@ -5,7 +5,11 @@ import SearchFilmCheckBox from '../SearchFilmCheckBox/SearchFilmCheckBox';
 
 function SearchForm({ onFilter, isSavedMoviePage, lastQuery, lastStateCheckbox }) {
   const [query, setQuery] = useState(lastQuery || '')
-  const [isShortMovie, setIsShortMovie] = useState(lastStateCheckbox || false)
+  const [isShortMovie, setIsShortMovie] = useState(() => {
+    if (!isSavedMoviePage) {
+      return lastStateCheckbox
+    } else return false
+  })
 
   const handleChange = (e) => {
     const { value } = e.target
@@ -14,11 +18,9 @@ function SearchForm({ onFilter, isSavedMoviePage, lastQuery, lastStateCheckbox }
 
   const handleFilterSubmit = (state) => {
     onFilter(query, state)
-
   }
 
   const handleFilterCheckbox = (state) => {
-    setIsShortMovie(!isShortMovie)
     onFilter(query, state)
   }
 
@@ -27,7 +29,7 @@ function SearchForm({ onFilter, isSavedMoviePage, lastQuery, lastStateCheckbox }
       <form className="search__form"
         onSubmit={(e) => {
           e.preventDefault()
-          handleFilterSubmit(isShortMovie)
+          handleFilterSubmit(!isShortMovie)
         }}
       >
         <input
@@ -44,7 +46,9 @@ function SearchForm({ onFilter, isSavedMoviePage, lastQuery, lastStateCheckbox }
           <img src={search} alt="Поиск" />
         </button>
       </form>
-      <SearchFilmCheckBox onFilter={() => handleFilterCheckbox(isShortMovie)} isShortMovie={isShortMovie} />
+      <SearchFilmCheckBox onFilter={() => handleFilterCheckbox(isShortMovie)}
+      onClick={() => setIsShortMovie(!isShortMovie)}
+      isShortMovie={isSavedMoviePage ? isShortMovie : !isShortMovie} />
     </section>
   );
 }

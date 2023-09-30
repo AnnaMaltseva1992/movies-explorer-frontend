@@ -17,15 +17,14 @@ function Movies({ isLoggedIn }) {
   const NUMBER_OF_MOVIE_MOBILE = 5;
   const MOBILE_SIZE = 480;
   const TABLET_SIZE = 768
- 
+
   const [initialMovies, setInitialMovies] = useState([]);
   const [isEmptyQuery, setIsEmptyQuery] = useState(false);
   const [isEmptyResults, setIsEmptyResults] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const [savedMovies, setSavedMovies] = useState(() => {
-    if (localStorage.getItem('movieToRender')) {
-
+    if (localStorage.getItem('savedMovies')) {
       return JSON.parse(localStorage.getItem('savedMovies'))
     } else {
       return [];
@@ -75,8 +74,7 @@ function Movies({ isLoggedIn }) {
   const handleAddMovie = (movie) => {
     return addMovie(movie)
       .then((res) => {
-        setSavedMovies([...savedMovies, res])
-        localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
+        setSavedMovies((prev) => [...prev, res])
       })
       .catch((err) => {
         console.log(err)
@@ -88,7 +86,6 @@ function Movies({ isLoggedIn }) {
     return removeMovie(newMovieId._id)
       .then((res) => {
         const newSavedMovie = savedMovies.filter((item) => item.movieId !== movieId)
-        localStorage.setItem('savedMovies', JSON.stringify(newSavedMovie))
         setSavedMovies(newSavedMovie)
       })
       .catch((err) => {
@@ -165,7 +162,11 @@ function Movies({ isLoggedIn }) {
   const renderedMovies = movieToRender.slice(0, visibleMovies);
   const lastQuery = localStorage.getItem('query')
   const lastStateCheckbox = localStorage.getItem('isShortMovie') === 'false'
-  console.log('Query', lastQuery, 'State', localStorage.getItem('isShortMovie'), 'Type', typeof lastStateCheckbox)
+
+  useEffect(() => {
+    localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
+  },[savedMovies])
+
   return (
     <>
       <Header isLoggedIn={isLoggedIn} />

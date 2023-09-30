@@ -62,21 +62,33 @@ function MoviesCard(props) {
       >
         <img className="card__image" alt={name} src={image} />
       </a>
-      {isSavedMoviePage && <button type="button" onClick={handleRemoveFromSaved} className={`card__delete-button ${!isVisible && 'card__delete-button_hidden'}`} />}
-      {!isSavedMoviePage && <button
-        onMouseEnter={() => {
-          setIsVisible(true);
-        }}
-        onMouseLeave={() => {
-          setIsVisible(false);
-        }}
-        type="button"
-        onClick={() => {
-          handleCardClick();
-        }}
-        className={`card__save-button ${isVisible ? "" : "card__save-button_hidden"
-          } ${isLiked ? "card__save-button_active" : ""} `}
-      ></button>}
+      {isSavedMoviePage &&
+        <button
+          onMouseEnter={() => {
+            setIsVisible(true);
+          }}
+          onMouseLeave={() => {
+            setIsVisible(false);
+          }}
+          type="button"
+          onClick={handleRemoveFromSaved}
+          className={`card__delete-button ${!isVisible && 'card__delete-button_hidden'}`} />}
+
+      {!isSavedMoviePage &&
+        <button
+          onMouseEnter={() => {
+            setIsVisible(true);
+          }}
+          onMouseLeave={() => {
+            setIsVisible(false);
+          }}
+          type="button"
+          onClick={() => {
+            handleCardClick();
+          }}
+          className={`card__save-button ${isVisible ? "" : "card__save-button_hidden"
+            } ${isLiked ? "card__save-button_active" : ""} `}
+        ></button>}
       <div className="card__info">
         <p className="card__name">{name}</p>
         <p className="card__duration">{`${hours}ч ${minutes}м`}</p>

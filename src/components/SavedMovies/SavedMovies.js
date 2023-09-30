@@ -36,13 +36,12 @@ function SavedMovies({ isLoggedIn }) {
       const filteredMovie = savedMovies.filter((movie) => {
         const isIncluded = movie.nameRU.toLowerCase().includes(query.toLowerCase());
         const isShort = movie.duration <= SHORT_FILM_DURATION;
-        if (isShortMovie) {
+        if (!isShortMovie) {
           return isIncluded && isShort;
         } else {
           return isIncluded;
         }
       });
-
       if (filteredMovie.length === 0) {
         setIsEmptyResults(true)
       }
@@ -56,9 +55,9 @@ function SavedMovies({ isLoggedIn }) {
   return (
     <>
       <Header isLoggedIn={isLoggedIn} />
-      <main>
+      <main className="main">
         <section className="saved-movies">
-          <SearchForm isSavedMoviePage={true} onFilter={handleFilter} />
+          <SearchForm isSavedMoviePage={true} lastStateCheckbox={false} onFilter={handleFilter} />
           {isEmptyQuery ? <span className="movies__error-empty" >Нужно ввести ключевое слово</span>
             : isEmptyResults ? <span className="movies__error-empty">Ничего не найдено</span> :
               <MoviesCardList handleDislike={handleDislike} isSavedMoviePage={true} savedMovies={savedMovies} cards={movieToRender} />}
