@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./Movies.css";
-import { addMovie, removeMovie, getMySavedMovie } from "../../utils/MainApi"
-import { getInitialMovies, } from "../../utils/MoviesApi";
+import { addMovie, removeMovie } from "../../utils/MainApi"
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+// import { getInitialMovies, } from "../../utils/MoviesApi";
+import ScrollButton from "../ScrollButton/ScrollButton";
+import SearchForm from "../SearchForm/SearchForm";
+import Preloader from "../Preloader/Preloader";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import {
   SHORT_FILM_DURATION,
   NUMBER_OF_MOVIE_DESKTOP,
@@ -9,21 +15,12 @@ import {
   NUMBER_OF_MOVIE_MOBILE,
   MOBILE_SIZE, TABLET_SIZE
 } from '../../utils/constants'
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import ScrollButton from "../ScrollButton/ScrollButton";
-import SearchForm from "../SearchForm/SearchForm";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import Preloader from "../Preloader/Preloader";
 
-function Movies({ isLoggedIn }) {
-
-
+function Movies({ isLoggedIn, onGetInitialMovie, onGetMySavedMovies }) {
   const [initialMovies, setInitialMovies] = useState([]);
   const [isEmptyQuery, setIsEmptyQuery] = useState(false);
   const [isEmptyResults, setIsEmptyResults] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-
   const [savedMovies, setSavedMovies] = useState(() => {
     if (localStorage.getItem('savedMovies')) {
       return JSON.parse(localStorage.getItem('savedMovies'))
@@ -41,8 +38,8 @@ function Movies({ isLoggedIn }) {
   })
 
   const handleGetInitialMovies = () => {
-
-    return getInitialMovies()
+    setIsLoading(true)
+    return onGetInitialMovie()
       .then((res) => {
         setInitialMovies(res);
         localStorage.setItem("initialMovies", JSON.stringify(res));
@@ -50,18 +47,15 @@ function Movies({ isLoggedIn }) {
       .catch((err) => {
         console.log(err);
       })
-      .finally();
+      .finally(setIsLoading(false));
   };
 
   const handleGetMySavedMovies = () => {
-    return getMySavedMovie()
+    return onGetMySavedMovies()
       .then((res) => {
         setSavedMovies(res);
         localStorage.setItem("savedMovies", JSON.stringify(res));
       })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   useEffect(() => {
@@ -95,7 +89,7 @@ function Movies({ isLoggedIn }) {
   }
 
   const handleFilter = (query, isShortMovie) => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (query === '') {
       setIsEmptyQuery(true)
       setIsLoading(false)
@@ -162,7 +156,7 @@ function Movies({ isLoggedIn }) {
 
   const renderedMovies = movieToRender.slice(0, visibleMovies);
   const lastQuery = localStorage.getItem('query')
-  const lastStateCheckbox = localStorage.getItem('isShortMovie') === 'false'
+  const lastStateCheckbox = JSON.parse(localStorage.getItem('isShortMovie')) || false
 
   useEffect(() => {
     localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
@@ -173,7 +167,7 @@ function Movies({ isLoggedIn }) {
       <Header isLoggedIn={isLoggedIn} />
       <main>
         <section className="movies">
-          <SearchForm lastQuery={lastQuery} lastStateCheckbox={lastStateCheckbox} isSavedMoviePage={false} onFilter={handleFilter} />
+          <SearchForm lastQuery={lastQuery} lastStateCheckbox={!lastStateCheckbox} isSavedMoviePage={false} onFilter={handleFilter} />
           {isEmptyQuery ? <span className="movies__error-empty" >Нужно ввести ключевое слово</span>
             : isEmptyResults ? <span className="movies__error-empty">Ничего не найдено</span> : isLoading ? <Preloader /> : <>
               <MoviesCardList

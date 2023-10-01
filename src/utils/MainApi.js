@@ -50,6 +50,16 @@ export const userEdit = (item) => {
   }).then((res) => checkResponse(res));
 };
 
+export const getUserData = () => {
+  return fetch(`${BASE_URL}/users/me`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
+  }).then((res) => checkResponse(res));
+};
+
 export const tokenCheck = () => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",

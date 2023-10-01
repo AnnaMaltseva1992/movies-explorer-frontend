@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { registration, login, tokenCheck, userEdit } from "../../utils/MainApi";
+import { registration, login, tokenCheck, userEdit, getUserData, getMySavedMovie } from "../../utils/MainApi";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
+import { getInitialMovies } from "../../utils/MoviesApi";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ErrorNotFound from "../ErrorNotFound/ErrorNotFound";
-import AboutProject from "../AboutProject/AboutProject";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import InfoTool from "../infoToolTip/InfoTool";
 import Register from "../Register/Register";
-import AboutMe from "../AboutMe/AboutMe";
 import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import Login from "../Login/Login";
-import Techs from "../Techs/Techs";
 import Main from "../Main/Main";
 
 function App() {
   const [infoToolTip, setInfoToolTip] = useState({ statusOk: false, text: '', opened: false, })
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [isFetchingProcess, setIsFetchingProcess] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -47,24 +46,34 @@ function App() {
 
 
   function handleRegistration(formValue) {
+    setIsFetchingProcess(true)
     return registration(formValue)
       .then((res) => {
         setInfoToolTip({ statusOk: true, text: 'Пользователь зарегистрирован', opened: true, })
         setCurrentUser(res.data);
-        handleLogin(formValue);
+        const { email, password } = formValue
+        handleLogin({ email, password });
       })
+      .finally(setIsFetchingProcess(false))
   }
 
   function handleLogin(formValue) {
+    setIsFetchingProcess(true)
     return login(formValue)
       .then((res) => {
         setIsLoggedIn(true);
         localStorage.setItem("jwt", res.token);
-        navigate("/movies", { replace: true });
+        navigate("/movies", { replace: true })
+        return getUserData()
+          .then((res) => {
+            setCurrentUser(res);
+          });
       })
+      .finally(setIsFetchingProcess(false))
   }
 
   function handleEditProfile(formValue) {
+    setIsFetchingProcess(true)
     return userEdit(formValue)
       .then((res) => {
         const { name, email } = res
@@ -73,6 +82,7 @@ function App() {
           email
         })
       })
+      .finally(setIsFetchingProcess(false))
   }
 
   function handleLogOut() {
@@ -80,6 +90,20 @@ function App() {
     setIsLoggedIn(false)
     navigate('/', { replace: true })
     setCurrentUser({})
+  }
+
+  const handleGetInitialMovies = () => {
+    return getInitialMovies()
+      .catch((err) => {
+        setInfoToolTip({ statusOk: false, text: 'Что-то пошло не так.', opened: true, })
+      })
+  };
+
+  const handleGetMySavedMovies = () => {
+    return getMySavedMovie()
+      .catch((err) => {
+        setInfoToolTip({ statusOk: false, text: 'Что-то пошло не так.', opened: true, })
+      });
   }
 
   function handleCloseInfoTooltip() {
@@ -95,7 +119,7 @@ function App() {
             <Route
               path="/movies"
               element={
-                <ProtectedRoute isLoggedIn={isLoggedIn} element={Movies} />
+                <ProtectedRoute onGetMySavedMovies={handleGetMySavedMovies} onGetInitialMovie={handleGetInitialMovies} isLoggedIn={isLoggedIn} element={Movies} />
               }
             />
             <Route
@@ -111,20 +135,32 @@ function App() {
                   isLoggedIn={isLoggedIn}
                   handleUserEdit={handleEditProfile}
                   handleLogOut={handleLogOut}
+                  isFetching={isFetchingProcess}
                   element={Profile}
                   setInfoToolTip={setInfoToolTip}
                 />
               }
             />
-            <Route path="/about-project" element={<AboutProject />} />
-            <Route path="/techs" element={<Techs />} />
-            <Route path="/about-me" element={<AboutMe />} />
             <Route
               path="/signin"
-              element={<Login setCurrentUser={setCurrentUser} setInfoToolTip={setInfoToolTip} handleSubmit={handleLogin} />} />
+              element={<ProtectedRoute
+                isLoggedIn={!isLoggedIn}
+                setCurrentUser={setCurrentUser}
+                setInfoToolTip={setInfoToolTip}
+                handleSubmit={handleLogin}
+                isFetching={isFetchingProcess}
+                element={Login}
+              />} />
+
             <Route
               path="/signup"
-              element={<Register setInfoToolTip={setInfoToolTip} handleSubmit={handleRegistration} />}
+              element={<ProtectedRoute
+                isLoggedIn={!isLoggedIn}
+                setInfoToolTip={setInfoToolTip}
+                handleSubmit={handleRegistration}
+                isFetching={isFetchingProcess}
+                element={Register}
+              />}
             />
             <Route path="/*" element={<ErrorNotFound />} />
           </Routes>

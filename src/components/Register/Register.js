@@ -3,7 +3,7 @@ import "./Register.css";
 import { REGEX_EMAIL } from "../../utils/constants";
 import Form from "../Form/Form";
 
-function Register({ handleSubmit, setInfoToolTip }) {
+function Register({ handleSubmit, setInfoToolTip, isFetching }) {
   const [formValue, setFormValue] = useState({
     name: "",
     email: "",
@@ -93,6 +93,7 @@ function Register({ handleSubmit, setInfoToolTip }) {
       link="/signin"
       submitHandler={handleRegistration}
       isButtonDisabled={isFormFieldsValid}
+      isFetching={isFetching}
     >
       <label className="form__label">Имя</label>
       <section className="form__section">

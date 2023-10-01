@@ -4,7 +4,7 @@ import Header from "../Header/Header";
 import { REGEX_EMAIL } from "../../utils/constants";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 
-function Profile({ isLoggedIn, handleUserEdit, handleLogOut, setInfoToolTip }) {
+function Profile({ isLoggedIn, handleUserEdit, handleLogOut, setInfoToolTip, isFetching }) {
   const userData = useContext(CurrentUserContext);
   const [formValue, setFormValue] = useState({
     name: userData.name || "",
@@ -164,7 +164,7 @@ function Profile({ isLoggedIn, handleUserEdit, handleLogOut, setInfoToolTip }) {
                 type="button"
                 onClick={handleUserEditSubmit}
                 disabled={!isSubmitButtonActive}
-                className={`profile__button-save${isSubmitButtonActive ? "" : "_disabled"
+                className={`profile__button-save${isSubmitButtonActive || isFetching ? "" : "_disabled"
                   }`}
               >
                 Cохранить
