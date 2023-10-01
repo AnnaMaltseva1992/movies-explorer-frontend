@@ -142,6 +142,8 @@ function Register({ handleSubmit, setInfoToolTip, isFetching }) {
           type="password"
           required
           placeholder="Пароль"
+          minLength="2"
+          maxLength="40"
           onChange={handleChangePassword}
         />
         <span
