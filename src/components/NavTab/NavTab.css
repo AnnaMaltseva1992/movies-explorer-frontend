@@ -23,6 +23,10 @@
   justify-content: center;
 }
 
+.nav-tab__link:hover {
+  cursor: pointer;
+}
+
 /* .nav-tab__button {
   border-radius: 10px;
   background-color: #303030;
